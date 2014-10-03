@@ -1,0 +1,12 @@
+<% form.start %>
+<form accept-charset="UTF-8" action="<% form_action %>" class="edit_news_item"  method="post">
+  <div class="field">
+    <label for="news_item_body">Body</label><br>
+    <textarea id="news_item_body" name="body">
+<% news_item.body %></textarea>
+  </div>
+
+  <div class="actions">
+    <input name="commit" type="submit" value="Submit" />
+  </div>
+</form>

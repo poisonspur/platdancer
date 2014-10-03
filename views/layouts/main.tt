@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>platdancer</title>
+  <link rel="stylesheet" href="<% request.uri_base %>/css/style.css" />
+
+<!--
+-->
+</head>
+<body>
+<div id="wrap">
+  <div id="masthead">
+  <!--
+    <a href="/"><h1>platypus dot org</h1></a>
+  -->
+  <h1>platypus dot org (dancer)</h1>
+  </div>
+<!-- fix site name highlight -->
+  <div id="menucontainer">
+    <div id="menu">
+      <ul>
+        <li><a href="/" class="<% navbar.home %>" >Home</a></li>
+        <li><a href="/about_dave" class="<% navbar.about_dave %>" >About Dave</a></li>
+        <li><a href="/about_platypus" class="<% navbar.about_platypus %>" >About platypus.org</a></li>
+        <li><a href="/site_news" class="<% navbar.site_news %>" >Site News</a></li>
+        <li><a href="/projects" class="<% navbar.projects %>" >Projects</a></li>
+        <li><a href="http://poisonspur.com" class="" >Poison Spur</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="container">
+    <div id="sidebar">
+      <img src="<% request.uri_base %>/images/platlogo.jpg" />
+      <h3>Site News</h3>
+      <% FOREACH news_item IN recent_sitenews %>
+            <li><a href="/news_items/<% news_item.id %>"><% FILTER truncate(23) %><% news_item.body %><% END %></a></li>
+        <% END %>
+      <h3>Poison Spur</h3>
+      </div>
+    </div>
+
+    <div id="content">
+    <p class="notice"><% notice %></p>
+    <p class="alert"><% alert %></p>
+
+
+<% content %>
+    </div>
+
+  <div id="footer"> <!--<a href="/">homepage</a> | <a href="/contact">contact</a> | <a href="http://validator.w3.org/check?uri=referer">html</a> | <a href="http://jigsaw.w3.org/css-validator">css</a> | --> &copy; 2014 David Jennings |Design by <a href="http://www.mitchinson.net"> www.mitchinson.net</a><br/>
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a> </div>
+<p>
+</p>
+</div>
+
+
+</body>
+</html>

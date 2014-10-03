@@ -1,0 +1,28 @@
+      <br />
+      <% site.welcome %>
+      <br />
+      <br />
+      <br />
+      <img src="<% request.uri_base %>/images/platsketch300.jpg" />
+
+      <br />
+      <br />
+      <br />
+
+      <hr />
+
+      <table>
+      <tr>
+      <td width="50%">
+      <table>
+      <tr><td><b>Latest Site News</b></td></tr>
+      <tr><td><a href="/site_news/<% latest_news.id %>"><% latest_news.created_at %></a> - <% FILTER truncate(200) %><% latest_news.body %><% END %></td></tr>
+      </table>
+      </td>
+      <td width="50%">
+      <table>
+      <tr><td><b>Latest Poison Spur Entry</b></td></tr>
+      <tr><td><a href="<% latest_entry.url %>"><% latest_entry.title %></a> - <% latest_entry.body %></td></tr>
+      </table>
+      </td>
+      </table>

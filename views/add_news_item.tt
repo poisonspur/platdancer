@@ -1,0 +1,3 @@
+<h3>Adding News Item</h3>
+
+<% INCLUDE _news_item_form.tt %>
