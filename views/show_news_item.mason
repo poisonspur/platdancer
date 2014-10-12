@@ -1,0 +1,11 @@
+<%args>
+$request
+$news_item
+</%args>
+
+<h4><% $news_item->created_at %></h4>
+<p><% $news_item->body %></p>
+
+
+<a href="<% $request->uri_base %>/news_items/<% $news_item->id %>/edit">Edit</a>
+<a href="<% $request->uri_base %>/site_news">Back</a>

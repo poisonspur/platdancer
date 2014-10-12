@@ -1,0 +1,7 @@
+<%args>
+$news_item
+$form_action
+</%args>
+<h3>Editing News Item</h3>
+
+<& _news_item_form.mason, news_item => $news_item, form_action => $form_action &>

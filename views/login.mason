@@ -1,0 +1,16 @@
+<%args>
+$redir_page 
+</%args>
+<h2> Sign in</h2>
+<form accept-charset="UTF-8" action="/login" class="new_user" id="new_user" method="post">
+  <div><label for="user_email">Email</label><br />
+  <input autofocus="autofocus" name="user_email" type="email" value="" /></div>
+
+  <div><label for="user_password">Password</label><br />
+    <input autocomplete="off" name="user_password" type="password" /></div>
+
+    <div><input name="remember_me" type="checkbox" value="1" /> <label for="user_remember_me">Remember me</label></div>
+
+  <input name="redir_page" type="hidden" value="<% $redir_page %>" />
+  <div><input name="commit" type="submit" value="Sign in" /></div>
+</form>

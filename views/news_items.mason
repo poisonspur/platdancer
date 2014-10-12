@@ -1,0 +1,28 @@
+<%args>
+$news_items
+$request
+</%args>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+% foreach my $news_item (@{$news_items}) {
+      <tr align="left">
+        <td><strong><% $news_item->created_at %></strong></td>
+      </tr>
+      <tr>
+        <td><% $news_item->body %>&nbsp;<a href="<% $request->uri_base %>/news_items/<% $news_item->id %>">Show</a></td>
+      </tr>
+      <tr><td>&nbsp;</td</tr>
+      </tr>
+% }
+  </tbody>
+</table>
+
+<br>
+

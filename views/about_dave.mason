@@ -1,0 +1,20 @@
+<%args>
+$request
+$dave
+</%args>
+<table>
+<tr><td width="220px"><img src="<% $request->uri_base %>/images/<% $dave->profile_photo %>" /></td>
+<td valign="top">
+
+<p>
+  <strong>The dude:</strong>
+  <% $dave->first_name %> <% $dave->last_name %>
+</p>
+
+<p>
+  <strong>The deets:</strong>
+  <% $dave->summary %>
+</p>
+</td></tr>
+</table>
+
