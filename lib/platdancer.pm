@@ -29,6 +29,7 @@ get '/' => sub {
         navbar => _get_navbar('home'),
         latest_news => $news_items->first,
         logged_in => $logged_in,
+        latest_entry => {},
     };
 };
 
@@ -119,7 +120,7 @@ any [ 'get', 'post' ] => '/news_items/:id/edit' => sub {
         news_item => $news_item,
         navbar => _get_navbar('site_news'),
         message => $message,
-        form_action => '/news_items/edit',
+        form_action => '/news_items/'. params->{id} . '/edit',
         logged_in => $logged_in,
     };
 
@@ -161,6 +162,7 @@ any [ 'get', 'post' ] => '/login' => sub {
     my $redir_page = '/';
     my $q = request->params;
     my $message = '';
+    my $news_items = schema->resultset('NewsItems')->search( {}, {rows => 10, order_by => { -desc => 'created_at'} });
     if ( $q->{commit} ) {
 
         my $user = schema->resultset('Users')->search( { email => $q->{user_email} } )->first;
@@ -175,6 +177,7 @@ any [ 'get', 'post' ] => '/login' => sub {
     } 
 
     template 'login' => {
+        recent_sitenews => [$news_items->all],
         navbar => _get_navbar(''),
         message => $message,
         redir_page => $redir_page,
