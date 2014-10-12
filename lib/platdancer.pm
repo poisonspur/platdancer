@@ -6,6 +6,18 @@ use Data::Dumper;
 
 our $VERSION = '0.1';
 
+our $logged_in;
+
+hook before => sub {
+
+    if ( session('user') ) {
+        $logged_in = 1;
+    } else {
+        $logged_in = 0;
+    }
+
+};
+
 get '/' => sub {
 
     my $site = schema->resultset('Sites')->find(1);
@@ -16,6 +28,7 @@ get '/' => sub {
         recent_sitenews => [$news_items->all],
         navbar => _get_navbar('home'),
         latest_news => $news_items->first,
+        logged_in => $logged_in,
     };
 };
 
@@ -28,6 +41,7 @@ get '/about_dave' => sub {
         recent_sitenews => [$news_items->all],
         navbar => _get_navbar('about_dave'),
         dave => $dave,
+        logged_in => $logged_in,
     };
 
 };
@@ -41,6 +55,7 @@ get '/about_platypus' => sub {
         site => $site,
         recent_sitenews => [$news_items->all],
         navbar => _get_navbar('about_platypus'),
+        logged_in => $logged_in,
     };
 
 };
@@ -56,6 +71,7 @@ get '/site_news' => sub {
         news_items => [@news_items],
         recent_sitenews => [@recent_news_items],
         navbar => _get_navbar('site_news'),
+        logged_in => $logged_in,
     };
 
 };
@@ -71,6 +87,7 @@ get '/news_items/:id' => sub {
         recent_sitenews => [$news_items->all],
         news_item => $news_item,
         navbar => _get_navbar('site_news'),
+        logged_in => $logged_in,
     };
 
 
@@ -90,7 +107,7 @@ any [ 'get', 'post' ] => '/news_items/:id/edit' => sub {
         if ( is_auth() ) {
             $message = "Update successful";
             $news_item->update($q);
-            return forward '/news_items/' . params->{id}, { message => $message }, { method => 'GET' };
+            redirect '/news_items/' . params->{id};
         } else {
             $message = "You are not authorized to perform this action";
         }
@@ -103,6 +120,7 @@ any [ 'get', 'post' ] => '/news_items/:id/edit' => sub {
         navbar => _get_navbar('site_news'),
         message => $message,
         form_action => '/news_items/edit',
+        logged_in => $logged_in,
     };
 
 };
@@ -120,7 +138,7 @@ any [ 'get', 'post' ] => '/site_news/add' => sub {
             $news_item->insert($q);
             my $id = $news_item->id;
             $message = "Add successful";
-            return forward '/news_items/' . $id, { message => $message }, { method => 'GET' };
+            redirect '/news_items/' . $id;
         } else {
             $message = "You are not authorized to perform this action";
         }
@@ -132,7 +150,44 @@ any [ 'get', 'post' ] => '/site_news/add' => sub {
         navbar => _get_navbar('site_news'),
         message => $message,
         form_action => '/site_news/add',
+        logged_in => $logged_in,
     };
+
+};
+
+
+any [ 'get', 'post' ] => '/login' => sub {
+
+    my $redir_page = '/';
+    my $q = request->params;
+    my $message = '';
+    if ( $q->{commit} ) {
+
+        my $user = schema->resultset('Users')->search( { email => $q->{user_email} } )->first;
+        if ( $user && $user->validate_login($q->{user_email}, $q->{user_password}) ) {
+            $redir_page = '/';
+            session user => $user->id;
+            redirect '/';
+        } else {
+        }
+    } else {
+        $redir_page = request->referer;
+    } 
+
+    template 'login' => {
+        navbar => _get_navbar(''),
+        message => $message,
+        redir_page => $redir_page,
+        logged_in => $logged_in,
+    };
+
+};
+
+any [ 'get', 'post' ] => '/logout' => sub {
+
+    session user => undef;
+    redirect '/';
+
 
 };
 
@@ -156,7 +211,7 @@ sub _get_navbar {
         projects => '',
     };
 
-    $navbar->{$key} = 'current';
+    $navbar->{$key} = 'current' if $key;
 
     return $navbar;
 
